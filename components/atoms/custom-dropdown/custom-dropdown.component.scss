@@ -1,0 +1,70 @@
+.custom-dropdown-icon {
+  position: relative;
+}
+
+.custom-dropdown-icon.text ::ng-deep .p-dropdown-label {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+.custom-dropdown-icon ::ng-deep .p-dropdown-label {
+  padding-left: 2.5rem;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+  position: relative;
+}
+
+/* Only for phone dropdown padding */
+.custom-dropdown-icon.phone-icon ::ng-deep .p-dropdown-label {
+  padding-left: 0rem !important;
+}
+
+.custom-dropdown-icon.image ::ng-deep .p-dropdown-label::before {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  background: var(--dropdown-icon) no-repeat center;
+  background-size: contain;
+}
+
+.custom-dropdown-icon.icon .dropdown-icon-inside {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  z-index: 10;
+}
+
+@media screen and (max-width: 1200px) {
+  .custom-dropdown-icon ::ng-deep .w-full > .p-dropdown-label {
+    text-indent: 0px !important;
+  }
+
+  .custom-dropdown-icon.image ::ng-deep .w-full > .p-dropdown-label {
+    padding-left: 2.5rem;
+  }
+
+  .custom-dropdown-icon ::ng-deep .p-dropdown-label {
+    text-indent: -9999px;
+  }
+
+  .custom-dropdown-icon.image ::ng-deep .p-dropdown-label {
+    display: inline-block;
+    min-width: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .custom-dropdown-icon ::ng-deep .p-dropdown-label {
+    padding-left: 0.5rem;
+  }
+
+  .custom-dropdown-icon.image ::ng-deep .p-dropdown-label {
+    padding-left: 0.5rem;
+  }
+}

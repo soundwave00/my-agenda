@@ -1,0 +1,69 @@
+<div class="h-full relative">
+  <div *ngIf="!isMobileView">
+    <app-filters-bar
+      class="filter-bar-container"
+      (changeCalendarView)="changeView($event)"
+      (goNextClicked)="goNext()"
+      (goPrevClicked)="goPrev()"
+      (goTodayClicked)="goToday()"
+      (goToEventDate)="goToDate($event)"
+      (filtersChanged)="applyFilters($event)"
+    >
+    </app-filters-bar>
+  </div>
+
+  <div *ngIf="isMobileView">
+    <app-header-bar-mobile
+      (filtersChanged)="applyFilters($event)"
+      (goToEventDate)="goToDate($event)"
+    ></app-header-bar-mobile>
+  </div>
+
+  <div
+    class="calendar-wrapper"
+    [ngClass]="{ 'calendar-with-sidebar': showDaySlider }"
+  >
+    <div
+      class="calendar-container"
+      [ngClass]="{ 'calendar-with-sidebar': showDaySlider }"
+    >
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
+
+    <!-- Day Events Panel -->
+    <div
+      *ngIf="showDaySlider"
+      class="day-events-panel"
+      tabindex="0"
+      #daySliderElement
+      (keydown.escape)="closeDaySlider()"
+    >
+      <div class="day-events-content h-full">
+        <full-calendar
+          #sliderCalendar
+          [options]="sliderCalendarOptions"
+        ></full-calendar>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="mb-2">
+      <i
+        class="pi pi-spin pi-spinner"
+        style="font-size: 2rem; color: #fec600"
+      ></i>
+    </div>
+    <span>Caricamento ...</span>
+  </div>
+</div>
+
+<div *ngIf="isMobileView">
+  <app-bottom-bar-mobile
+    [isCreateAppointmentVisible]="true"
+    [commands]="commands"
+    (changeCalendarView)="changeView($event)"
+    (goNextClicked)="goNext()"
+    (goPrevClicked)="goPrev()"
+  ></app-bottom-bar-mobile>
+</div>

@@ -1,0 +1,157 @@
+<div
+  class=""
+  [ngClass]="{
+    'sidebar-container-overlay': showDialog
+  }"
+></div>
+<div
+  [ngClass]="{
+    'sidebar-custom-show': showDialog,
+    'sidebar-custom-hide': !showDialog
+  }"
+>
+  <div class="sidebar-toolbar shadow-1">
+    <div class="flex gap-1 align-items-center">
+      <i class="pi pi-calendar-plus"></i>
+      <select name="status" id="status">
+        <option value="1">Arrivato</option>
+      </select>
+    </div>
+
+    <div class="flex gap-2 align-items-center">
+      <!-- Mostra Elimina solo se mode != new -->
+      <app-custom-button
+        styleClass="border-round-2xl p-2 gap-1 p-button-error text-gray-700"
+        label="Elimina"
+        icon="pi pi-calendar-times"
+        (click)="onDelete()"
+        *ngIf="mode !== 'new'"
+      ></app-custom-button>
+      <app-custom-button
+        *ngIf="mode === 'view'"
+        styleClass="border-round-2xl p-2 gap-1 p-button-primary"
+        label="Modifica"
+        icon="pi pi-pen-to-square"
+        (click)="onEditClick()"
+      ></app-custom-button>
+      <app-custom-button
+        styleClass="p-button-blank"
+        icon="pi pi-times"
+        (click)="onSidebarHide()"
+      ></app-custom-button>
+    </div>
+  </div>
+
+  <div class="p-3 flex flex-column gap-3">
+    <!-- Modalità VIEW: mostra dati in sola lettura -->
+    <div class="flex flex-column gap-2 mb-2">
+      <div class="w-full flex justify-content-between aling-items-center">
+        <h1>{{ eventInfo?.extendedProps?.['patientName'] }}</h1>
+
+        <app-custom-button
+          styleClass="p-button-primary rounded-full button-no-icon"
+          icon="pi pi-whatsapp"
+        ></app-custom-button>
+      </div>
+    </div>
+    <div class="flex flex-row justify-content-between align-items-center">
+      <app-custom-label
+        [isImage]="false"
+        icon="pi pi-user mr-2 text-500"
+        text="{{ eventInfo?.extendedProps?.['doctor'] }}"
+        textClass="text-md font-bold"
+      >
+      </app-custom-label>
+      <app-custom-label
+        icon="pi pi-fw pi-phone text-700 mr-2"
+        text="{{ eventInfo?.extendedProps?.['phoneNumber'] }}"
+        textClass="text-md"
+      >
+      </app-custom-label>
+    </div>
+    <app-custom-label
+      [isImage]="true"
+      icon="../../../assets/layout/images/office-chair.svg"
+      text="{{ eventInfo?.extendedProps?.['clinic'] }}"
+      textClass="text-md"
+    >
+    </app-custom-label>
+  </div>
+
+  <hr class="border-100 surface-overlay border opacity-20" />
+  <div class="pl-3 pr-3 flex flex-column gap-3">
+    <div class="mt-2 flex gap-2 mb-2">
+      <app-custom-label
+        icon="pi pi-fw pi-clock text-700 mr-2"
+        [text]="'' + (eventInfo?.start | date : 'dd/MM/yyyy')"
+        textClass="text-md"
+      >
+      </app-custom-label>
+
+      <app-custom-label
+        [text]="
+          '' +
+          (eventInfo?.start | date : 'HH:mm') +
+          ' - ' +
+          (eventInfo?.end | date : 'HH:mm')
+        "
+        textClass="text-md"
+      >
+      </app-custom-label>
+    </div>
+    <div class="flex align-items-start w-full">
+      <div class="mr-2">
+        <img
+          src="../../../assets/layout/images/emergency-kit.svg"
+          class="imported-icon"
+        />
+      </div>
+      <div class="flex flex-column gap-2 w-full">
+        <div class="service-container">
+          <span>Prestazione</span>
+          <i>{{ eventInfo?.extendedProps?.['serviceName'] }}</i>
+        </div>
+      </div>
+    </div>
+    <hr class="border-100 surface-overlay border opacity-20" />
+    <div class="notes-container">
+      <div class="header">
+        <img
+          src="../../../assets/layout/images/clipboard.svg"
+          class="imported-icon"
+        />
+        <span class="font-semibold">NOTE</span>
+      </div>
+      <hr class="border-100 surface-overlay border opacity-30 m-0" />
+      <div class="body">
+        <div class="flex flex-row gap-3 justify-content-start w-full">
+          <ng-container
+            *ngFor="let alertItem of eventInfo?.extendedProps?.['alert']"
+          >
+            <div class="flex align-items-center gap-2">
+              <img [src]="getAlertIcon(alertItem)" class="imported-icon" />
+              <small> {{ getAlertText(alertItem) }} </small>
+            </div>
+          </ng-container>
+        </div>
+
+        <textarea
+          class="w-full mt-2"
+          id="notes"
+          rows="6"
+          formControlName="notes"
+        >
+        </textarea>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <ng-container *ngIf="mode === 'view'">
+      <h2>{{ eventForm.get("title")?.value }}</h2>
+      <p><strong>Inizio:</strong> {{ eventForm.get("start")?.value }}</p>
+      <p><strong>Fine:</strong> {{ eventForm.get("end")?.value }}</p>
+      <p>
+        <strong>Descrizione:</strong> {{ eventForm.get("description")?.value }}
+      </p>
+      <p><strong>Location:</strong> {{ eventForm.get("location")?.value }}</p>
+    </ng-container> -->

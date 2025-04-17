@@ -1,0 +1,15 @@
+<div class="flex align-items-center m-0">
+  <!-- Se isImage è true, mostra un'immagine -->
+  <img
+    *ngIf="isImage"
+    [src]="icon"
+    [ngClass]="iconClass ? iconClass : 'imported-icon'"
+    alt="icon"
+  />
+
+  <!-- Se isImage è false, mostra un'icona -->
+  <i *ngIf="!isImage" [class]="icon" class="mr-2"></i>
+
+  <!-- Testo con classe personalizzata -->
+  <span [ngClass]="textClass">{{ text }}</span>
+</div>

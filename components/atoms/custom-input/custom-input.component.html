@@ -1,0 +1,23 @@
+<div class="flex align-items-center w-full">
+  <img *ngIf="isImage" [src]="icon" class="imported-icon" alt="icon" />
+
+  <!-- Se isImage è false, usa un'icona -->
+  <i *ngIf="!isImage" [class]="icon"></i>
+  <span class="p-input-icon-right w-full">
+    <input
+      pInputText
+      [id]="id"
+      [name]="name"
+      [placeholder]="placeholder"
+      [ngClass]="styleClass"
+      [(ngModel)]="inputValue"
+      autocomplete="off"
+      (input)="handleChange($event)"
+    />
+    <i
+      *ngIf="inputValue"
+      class="pi pi-times cursor-pointer"
+      (click)="handleChange(null)"
+    ></i>
+  </span>
+</div>

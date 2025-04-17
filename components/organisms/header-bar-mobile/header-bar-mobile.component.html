@@ -1,0 +1,184 @@
+<div class="mobile-header-bar">
+  <div class="flex align-items-center justify-content-between w-full">
+    <div class="user-dropdown">
+      <p-dropdown
+        [options]="operators"
+        [(ngModel)]="selectedOperators"
+        optionLabel="name"
+        styleClass="user-dropdown-style"
+        (onChange)="updateOperators($event)"
+        placeholder="Seleziona operatore"
+        [showClear]="true"
+      >
+        <ng-template pTemplate="selectedItem">
+          <div class="user-info flex align-items-center gap-2">
+            <div class="avatar">
+              <i class="pi pi-user"></i>
+            </div>
+            <div class="user-name">
+              {{ selectedOperators?.name || "Seleziona operatore" }}
+            </div>
+          </div>
+        </ng-template>
+        <ng-template let-user pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            <div class="avatar-small">
+              <i class="pi pi-user"></i>
+            </div>
+            <div>{{ user.name }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+    <div class="actions flex align-items-center gap-2">
+      <button class="filter-button" (click)="openCalendar()">
+        <i class="pi pi-calendar"></i>
+      </button>
+      <button class="filter-button" (click)="navigateToSearch()">
+        <i class="pi pi-search"></i>
+      </button>
+      <button class="filter-button" (click)="toggleFilterModal()">
+        <i class="pi pi-filter"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Filter Modal -->
+<p-dialog
+  [(visible)]="showFilterModal"
+  [modal]="true"
+  [dismissableMask]="true"
+  [showHeader]="false"
+  styleClass="filter-modal"
+  position="bottom"
+  [style]="{ width: '100vw', margin: '0' }"
+>
+  <div class="filter-modal-content">
+    <h2>Filtri</h2>
+    <p-divider></p-divider>
+    <div class="filter-item">
+      <span class="filter-icon"><i class="pi pi-home"></i></span>
+      <div class="flex-auto">
+        <p-dropdown
+          [showClear]="true"
+          [options]="clinics"
+          [(ngModel)]="tempFilters.selectedClinics"
+          optionLabel="name"
+          placeholder="Seleziona clinica"
+          styleClass="w-full"
+          (onChange)="updateClinics($event)"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="filter-item">
+      <span class="filter-icon">
+        <i class="pi pi-user"></i>
+      </span>
+      <div class="flex-auto">
+        <p-dropdown
+          [showClear]="true"
+          [options]="operators"
+          [(ngModel)]="tempFilters.selectedOperators"
+          optionLabel="name"
+          placeholder="Seleziona operatori"
+          styleClass="w-full"
+          (onChange)="updateOperators($event)"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="filter-item">
+      <span class="filter-icon">
+        <img
+          class="chair-img"
+          src="../../../../assets/layout/images/office-chair.svg"
+          alt="User Avatar"
+      /></span>
+      <div class="flex-auto">
+        <p-multiSelect
+          preventKeyboard
+          [showClear]="true"
+          [options]="chairs"
+          [appendTo]="'body'"
+          [maxSelectedLabels]="2"
+          selectedItemsLabel="{0} elementi selezionati"
+          [(ngModel)]="tempFilters.selectedChairs"
+          optionLabel="name"
+          placeholder="Seleziona poltrone"
+          styleClass="w-full"
+          (onChange)="updateChairs($event)"
+          [showToggleAll]="false"
+          [showHeader]="false"
+          [filter]="false"
+        >
+        </p-multiSelect>
+      </div>
+    </div>
+
+    <div class="filter-item">
+      <span class="filter-icon">
+        <img
+          class="chair-img"
+          src="../../../../assets/layout/images/calendar-star.svg"
+          alt="User Avatar"
+      /></span>
+      <div class="flex-auto">
+        <p-dropdown
+          [showClear]="true"
+          [options]="statesOptions"
+          [(ngModel)]="selectedStates"
+          optionLabel="label"
+          placeholder="Stato: tutti"
+          styleClass="w-full"
+          (onChange)="updateStates($event)"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="filter-switch">
+      <p-inputSwitch
+        [(ngModel)]="availableOperatorsSwitch"
+        (onChange)="handleSwitchChange($event)"
+      ></p-inputSwitch>
+      <span>Operatori disponibili</span>
+    </div>
+
+    <div class="filter-actions gap-2">
+      <button class="p-button-secondary" (click)="cancelFilters()">
+        <i class="pi pi-times"></i> Annulla
+      </button>
+      <button class="p-button-primary" (click)="applyFilters()">
+        <i class="pi pi-check"></i> Applica
+      </button>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- Calendar Modal -->
+<p-dialog
+  [(visible)]="showCalendarModal"
+  [modal]="true"
+  [dismissableMask]="true"
+  [showHeader]="false"
+  styleClass="filter-modal"
+  position="center"
+  [style]="{ margin: '0' }"
+>
+  <p-calendar
+    [touchUI]="true"
+    [(ngModel)]="event_date"
+    [iconDisplay]="'input'"
+    dateFormat="dd MM yy"
+    class="calendar-lg"
+    [showIcon]="true"
+    (ngModelChange)="onSetEventDate()"
+    inputId="icondisplay"
+    [inline]="true"
+    inputId="icondisplay"
+  />
+</p-dialog>

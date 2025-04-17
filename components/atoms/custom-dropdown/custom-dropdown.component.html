@@ -1,0 +1,22 @@
+<div
+  class="custom-dropdown-icon"
+  [ngClass]="{ 
+    image: isImage && !isTextOnly, 
+    icon: !isImage && !isTextOnly, 
+    text: isTextOnly,
+    'phone-icon': styleClass && styleClass.includes('phone-icon')
+  }"
+  [ngStyle]="isImage ? { '--dropdown-icon': 'url(' + icon + ')' } : {}"
+>
+  <i *ngIf="!isImage && !isTextOnly" [class]="icon + ' dropdown-icon-inside'"></i>
+  <p-dropdown
+    [options]="options"
+    [(ngModel)]="value"
+    [optionLabel]="optionLabel"
+    [placeholder]="placeholder"
+    [disabled]="isDisabled"
+    [showClear]="true"
+    (onChange)="handleChange($event)"
+    [styleClass]="styleClass"
+  ></p-dropdown>
+</div>

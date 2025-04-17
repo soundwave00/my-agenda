@@ -1,0 +1,40 @@
+<div class="dropdown-container">
+  <!-- Bottone per aprire il dropdown -->
+  <div class="dropdown-button" (click)="toggleDropdown()">
+    {{ label }}
+  </div>
+
+  <!-- Dropdown menu -->
+  <div class="dropdown-menu" *ngIf="isOpen">
+    <div
+      *ngFor="let option of options"
+      class="dropdown-item"
+      [class.disabled]="isSelected(option)"
+      (click)="!isSelected(option) && selectOption(option)"
+    >
+      <!-- Mostra l'icona se presente -->
+      <img
+        *ngIf="option.icon"
+        [src]="option.icon"
+        alt="icon"
+        class="option-icon"
+      />
+      {{ option.label }}
+    </div>
+  </div>
+
+  <!-- Opzioni selezionate -->
+  <div class="selected-options">
+    <span class="selected-item" *ngFor="let selected of selectedOptions">
+      <!-- Mostra l'icona accanto all'opzione selezionata -->
+      <img
+        *ngIf="selected.icon"
+        [src]="selected.icon"
+        alt="icon"
+        class="selected-icon"
+      />
+      {{ selected.label }}
+      <i class="pi pi-times remove-icon" (click)="removeOption(selected)"></i>
+    </span>
+  </div>
+</div>

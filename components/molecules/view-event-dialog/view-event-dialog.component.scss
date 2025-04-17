@@ -1,0 +1,124 @@
+:host ::ng-deep {
+  .event-dialog {
+    .p-dialog-content {
+      padding: 0;
+      border-radius: 2rem;
+
+      /* Hide scrollbar but allow scrolling */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Position relative for absolute positioning of header */
+      position: relative;
+    }
+
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #f7f7f7;
+      border-radius: 3rem 3rem 3rem 3rem;
+      margin: 0.5rem 0.5rem 0 0.5rem;
+    }
+
+    .dialog-content-container {
+      padding-top: 1rem;
+    }
+
+    &.p-dialog {
+      border-radius: 2rem;
+    }
+
+    .p-dialog-header {
+      border-radius: 2rem 2rem 0 0;
+    }
+
+    .p-calendar {
+      width: 100%;
+      .p-inputtext {
+        width: 100%;
+      }
+    }
+
+    .p-dropdown {
+      width: 100%;
+      background-color: #f7f7f7;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    .custom-dropdown-icon .p-dropdown-label {
+      text-indent: 0px !important;
+    }
+
+    .custom-dropdown-icon.image ::ng-deep .p-dropdown-label {
+      display: inline-block;
+      min-width: 2.5rem;
+    }
+  }
+}
+
+.maximized-class {
+  display: grid;
+  grid-template-columns: 60% 37%;
+  gap: 2rem;
+}
+
+.dialog-header {
+  background-color: #f7f7f7;
+  border-radius: 3rem;
+  margin: 0.5rem;
+}
+
+.alert-tag {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+
+  &.bg-pink-50 {
+    background-color: #fdf2f8;
+    color: #be185d;
+  }
+
+  &.bg-orange-50 {
+    background-color: #fff7ed;
+    color: #c2410c;
+  }
+
+  &.bg-red-50 {
+    background-color: #fef2f2;
+    color: #b91c1c;
+  }
+
+  &.bg-blue-50 {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+  }
+}
+
+.service-item {
+  background-color: #f7f7f7;
+  border-radius: 0.375rem;
+}
+
+.note-container {
+  background-color: #f7f7f7;
+  border-radius: 0.375rem;
+}
+
+.calendar-container {
+  margin-top: 10px;
+}
+
+:host ::ng-deep img {
+  &.chair-icon {
+    width: 16px;
+    height: 18px;
+    margin-right: 0.5rem;
+  }
+}

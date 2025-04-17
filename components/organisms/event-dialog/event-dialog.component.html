@@ -1,0 +1,12 @@
+<div *ngIf="isMobileView; else newEventDialog">
+  <app-mobile-event-dialog></app-mobile-event-dialog>
+  <app-mobile-new-event-dialog></app-mobile-new-event-dialog>
+</div>
+<ng-template #newEventDialog>
+  <div>
+    <app-view-event-dialog></app-view-event-dialog>
+  </div>
+  <div>
+    <app-new-event-dialog></app-new-event-dialog>
+  </div>
+</ng-template>

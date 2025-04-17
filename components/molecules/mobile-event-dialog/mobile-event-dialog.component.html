@@ -1,0 +1,204 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '100vw', maxWidth: '500px', margin: '0 auto' }"
+  [showHeader]="false"
+  styleClass="mobile-event-dialog"
+>
+  <div class="event-dialog-content">
+    <!-- Header with back button -->
+    <div class="dialog-header">
+      <div class="flex align-items-center">
+        <button class="back-button" (click)="closeDialog()">
+          <i class="pi pi-arrow-left"></i>
+        </button>
+        <h2 class="ml-2">Dettagli appuntamento</h2>
+      </div>
+    </div>
+
+    <!-- Patient Info -->
+    <div class="field mb-4 mt-3">
+      <div class="flex align-items-center">
+        <i class="pi pi-user mr-2"></i>
+        <div class="input-container w-full">
+          <app-custom-input
+            [placeholder]="'Nome paziente'"
+            [(ngModel)]="patientName"
+            styleClass="w-full"
+          ></app-custom-input>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone Number -->
+    <div class="field mb-4">
+      <div class="flex align-items-center">
+        <i class="pi pi-phone mr-2"></i>
+        <div class="input-container w-full">
+          <app-custom-input
+            [placeholder]="'Numero di telefono'"
+            [(ngModel)]="phoneNumber"
+            styleClass="w-full phone-input"
+          ></app-custom-input>
+        </div>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <!-- Service -->
+    <div class="field mb-4">
+      <div class="flex align-items-center">
+        <img
+          src="../../../../assets/layout/images/office-chair.svg"
+          class="mr-2 field-icon"
+        />
+        <div class="input-container w-full">
+          <p-dropdown
+            [options]="chairs"
+            [(ngModel)]="selectedChair"
+            optionLabel="name"
+            placeholder="Seleziona poltrona"
+            styleClass="w-full"
+            [appendTo]="'body'"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctor -->
+    <div class="field mb-4">
+      <div class="flex align-items-center">
+        <i class="pi pi-user-edit mr-2"></i>
+        <div class="input-container w-full">
+          <p-dropdown
+            [options]="doctors"
+            [(ngModel)]="selectedDoctor"
+            optionLabel="name"
+            placeholder="Seleziona dottore"
+            styleClass="w-full"
+            [appendTo]="'body'"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date -->
+    <div class="field mb-4">
+      <div class="flex align-items-center">
+        <i class="pi pi-calendar mr-2"></i>
+        <div class="input-container w-full">
+          <p-calendar
+            [(ngModel)]="selectedDate"
+            dateFormat="dd/MM/yy"
+            [showIcon]="false"
+            styleClass="w-full"
+            [appendTo]="'body'"
+            (onSelect)="updateEventDates()"
+            inputStyleClass="w-full"
+          ></p-calendar>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time -->
+    <div class="field mb-4">
+      <div class="flex align-items-center">
+        <i class="pi pi-clock mr-2"></i>
+        <div class="time-container w-full">
+          <div class="flex align-items-center justify-content-between">
+            <p-dropdown
+              [options]="timeSlots"
+              [(ngModel)]="selectedStartTime"
+              optionLabel="label"
+              placeholder="08:00"
+              styleClass="time-dropdown"
+              [appendTo]="'body'"
+              (onChange)="updateEventDates()"
+            ></p-dropdown>
+            <span class="mx-2 time-separator">-</span>
+            <p-dropdown
+              [options]="timeSlots"
+              [(ngModel)]="selectedEndTime"
+              optionLabel="label"
+              placeholder="09:00"
+              styleClass="time-dropdown"
+              [appendTo]="'body'"
+              (onChange)="updateEventDates()"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <!-- Status -->
+    <div class="field mb-4">
+      <div class="flex align-items-center">
+        <i class="pi pi-check-circle mr-2"></i>
+        <div class="input-container w-full">
+          <app-custom-dropdown
+            [options]="statuses"
+            [(ngModel)]="selectedStatus"
+            (valueChanged)="updateStatus($event)"
+            [isImage]="true"
+            [icon]="selectedStatus.icon"
+            optionLabel="label"
+            styleClass="dropdown-lg w-full status-dropdown"
+            placeholder="Confermato"
+          >
+          </app-custom-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <!-- Treatment Details -->
+    <div class="field mb-4">
+      <div class="flex align-items-center">
+        <i class="pi pi-briefcase mr-2"></i>
+        <div class="input-container w-full">
+          <app-custom-input
+            [placeholder]="'Dettagli trattamento'"
+            [(ngModel)]="treatmentDetails"
+            styleClass="w-full"
+          ></app-custom-input>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="field mb-4">
+      <div class="note-container p-3">
+        <p class="text-sm text-500">
+          {{
+            currentEvent?.description ||
+              "Dente 15, Lorem ipsum, dettagli aggiuntivi della prestazione"
+          }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-content-end mt-4 gap-3">
+      <button
+        pButton
+        label="Annulla"
+        class="p-button-rounded p-button-secondary p-button-small"
+        icon="pi pi-times"
+        (click)="closeDialog()"
+      ></button>
+      <button
+        pButton
+        label="Salva"
+        class="p-button-rounded p-button-primary p-button-small"
+        icon="pi pi-check"
+        (click)="saveEvent()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

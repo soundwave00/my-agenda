@@ -1,0 +1,339 @@
+<p-dialog
+  #dialog
+  [modal]="true"
+  [(visible)]="showModalView"
+  [position]="'center'"
+  [style]="{ width: '40rem', maxWidth: '95vw', maxHeight: '95vh' }"
+  [showHeader]="false"
+  [draggable]="false"
+  [closable]="true"
+  (onHide)="onModalHide()"
+  styleClass="event-dialog"
+  [maximizable]="true"
+  (onMaximize)="isMaximized = $event.maximized"
+>
+  <!-- Custom Header -->
+  <div
+    class="dialog-header sticky-header p-1 mb-0 flex align-items-center justify-content-between border-bottom-1 border-300"
+  >
+    <div class="flex align-items-center p-1">
+      <i class="pi pi-calendar mr-2 ml-2"></i>
+      <app-custom-dropdown
+        [options]="statusOptions"
+        [(ngModel)]="selectedStatus"
+        (valueChanged)="updateStatus($event)"
+        [isImage]="true"
+        [icon]="selectedStatus.icon"
+        optionLabel="label"
+        styleClass="dropdown-lg"
+        placeholder="Assente"
+      >
+      </app-custom-dropdown>
+    </div>
+    <div class="flex align-items-center gap-2">
+      <button
+        pButton
+        *ngIf="!isMaximized"
+        class="p-button-rounded p-button-danger p-button-outlined"
+        icon="pi pi-trash"
+        label="Elimina"
+        (click)="confirmDelete()"
+      ></button>
+      <button
+        pButton
+        *ngIf="!isMaximized"
+        class="p-button-rounded p-button-secondary"
+        icon="pi pi-pencil"
+        label="Modifica"
+        (click)="enableEditMode()"
+      ></button>
+      <app-custom-button
+        *ngIf="isMaximized"
+        styleClass="p-button-rounded p-button-secondary"
+        label="Duplica"
+        icon="pi pi-clone"
+      >
+      </app-custom-button>
+      <button
+        pButton
+        *ngIf="isMaximized"
+        class="p-button-rounded p-button-secondary"
+        icon="pi pi-undo"
+        label="Annulla"
+        (click)="cancelEdit()"
+      ></button>
+      <button
+        pButton
+        *ngIf="isMaximized"
+        class="p-button-rounded p-button-primary"
+        icon="pi pi-download"
+        label="Salva"
+        (click)="saveChanges()"
+      ></button>
+
+      <button
+        pButton
+        class="p-button-rounded p-button-text p-button-plain"
+        icon="pi pi-times"
+        (click)="onModalHide()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="p-4 pt-0">
+    <ng-container *ngIf="currentEvent">
+      <!-- View Mode -->
+      <div class="event-details" *ngIf="!isMaximized">
+        <!-- Patient Name -->
+        <div class="flex align-items-center justify-content-between mb-0">
+          <h2 class="text-2xl font-bold">
+            {{ currentEvent.extendedProps?.patientName || "Paziente" }}
+          </h2>
+          <app-custom-button
+            icon="pi pi-whatsapp"
+            styleClass="p-button-secondary"
+          ></app-custom-button>
+        </div>
+
+        <!-- Doctor -->
+        <div class="flex align-items-center justify-content-between mb-3">
+          <app-custom-label
+            [isImage]="false"
+            icon="pi pi-user mr-2 text-500"
+            text="{{ currentEvent.extendedProps?.['doctor'] }}"
+            textClass="text-md ml-1"
+          >
+          </app-custom-label>
+          <div>
+            <i class="pi pi-phone ml-4 mr-2 text-500"></i>
+            <span>{{ currentEvent.extendedProps?.phoneNumber }}</span>
+          </div>
+        </div>
+
+        <!-- Service -->
+        <app-custom-label
+          [isImage]="true"
+          icon="../../../assets/layout/images/office-chair.svg"
+          text="{{ currentEvent.extendedProps?.chair }}"
+          textClass="text-md ml-1"
+          iconClass="chair-icon"
+        >
+        </app-custom-label>
+
+        <p-divider />
+
+        <!-- Date and Time -->
+        <div class="flex align-items-center mb-3">
+          <app-custom-label
+            icon="pi pi-fw pi-clock text-700"
+            [text]="
+              (currentEvent.start
+                ? formatDateDisplay(currentEvent.start)
+                : '') +
+              ' - ' +
+              (currentEvent.end ? formatTimeOnly(currentEvent.end) : '')
+            "
+            textClass="text-md"
+          >
+          </app-custom-label>
+        </div>
+
+        <!-- Services List -->
+        <div class="service-list mb-4">
+          <ng-container *ngIf="currentEvent.extendedProps?.additionalServices">
+            <div class="mr-2">
+              <img
+                src="../../../../assets/layout/images/emergency-kit.svg"
+                class="imported-icon"
+              />
+            </div>
+            <div
+              *ngFor="
+                let service of currentEvent.extendedProps?.additionalServices
+              "
+              class="service-item p-3 border-1 border-300 border-round mb-2"
+            >
+              <div class="font-medium">{{ service.name }}</div>
+              <div class="text-sm text-500">{{ service.description }}</div>
+            </div>
+          </ng-container>
+
+          <!-- If no additional services, show main service -->
+          <div
+            *ngIf="!currentEvent.extendedProps?.additionalServices"
+            class="flex justify-content-evenly"
+          >
+            <div class="mr-2">
+              <img
+                src="../../../../assets/layout/images/emergency-kit.svg"
+                class="imported-icon"
+              />
+            </div>
+
+            <div
+              class="service-item p-3 border-1 border-300 border-round flex-auto"
+            >
+              <div class="font-medium">
+                {{ currentEvent.extendedProps?.serviceName }}
+              </div>
+              <div class="text-sm text-500">
+                Dente 15, Lorem ipsum, dettagli aggiuntivi della prestazione
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p-divider />
+
+        <!-- Notes Section -->
+        <div class="notes-section border-1 border-100 border-round p-3 mt-4">
+          <div
+            class="flex justify-content-start align-items-center mb-2 p-2 note-container"
+          >
+            <img
+              src="../../../assets/layout/images/clipboard.svg"
+              class="imported-icon mr-2"
+            />
+            <h3 class="uppercase text-sm font-bold m-0">Note</h3>
+          </div>
+
+          <!-- Alert Tags -->
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span
+              *ngFor="let alert of currentEvent.extendedProps?.alert"
+              class="alert-tag p-2 border-round-sm text-xs flex align-items-center"
+              [ngClass]="getAlertTagClass(alert)"
+            >
+              <i [class]="getAlertIcon(alert)" class="mr-1"></i>
+              {{ alert }}
+            </span>
+          </div>
+
+          <!-- Notes Text -->
+          <p class="text-sm border-1 border-300 border-round p-2">
+            {{
+              currentEvent.description ||
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut libero ut eros hendrerit fringilla sit amet id urna."
+            }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Edit Mode -->
+      <div [ngClass]="{ 'maximized-class': isMaximized }">
+        <div class="event-edit-form" *ngIf="isMaximized">
+          <!-- Patient Name -->
+          <div class="field mb-4 mt-3">
+            <app-custom-input
+              icon="pi pi-user mr-2"
+              [placeholder]="'Nome paziente'"
+              [(ngModel)]="editedEvent.extendedProps!.patientName"
+              styleClass="w-full text-3xl font-bold"
+            ></app-custom-input>
+          </div>
+
+          <!-- Doctor -->
+          <div class="field mb-3">
+            <div class="flex align-items-center">
+              <app-custom-dropdown
+                [options]="doctors"
+                optionLabel="name"
+                [isImage]="false"
+                icon="pi pi-user mr-2 text-500"
+                [placeholder]="'Seleziona Operatore'"
+                [(ngModel)]="selectedDoctor"
+                styleClass="w-full"
+                (valueChanged)="onDoctorChange($event)"
+              ></app-custom-dropdown>
+            </div>
+          </div>
+
+          <!-- Service -->
+          <div class="field mb-3">
+            <div class="flex align-items-center">
+              <app-custom-dropdown
+                [options]="chairs"
+                [(ngModel)]="selectedChairs"
+                (valueChanged)="updateChairs($event)"
+                [isImage]="true"
+                icon="../../../../assets/layout/images/office-chair.svg"
+                optionLabel="name"
+                styleClass="dropdown-lg"
+                placeholder="Seleziona Poltrona"
+              >
+              </app-custom-dropdown>
+            </div>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="field mb-3">
+            <div class="flex align-items-center">
+              <i class="pi pi-phone mr-2 text-500"></i>
+              <app-custom-input
+                [placeholder]="'Numero di telefono'"
+                [(ngModel)]="editedEvent.extendedProps!.phoneNumber"
+                styleClass="w-full"
+              ></app-custom-input>
+            </div>
+          </div>
+
+          <!-- Date and Time -->
+          <div class="field mb-4">
+            <div class="flex align-items-center mb-2">
+              <p-calendar
+                [(ngModel)]="selectedDate"
+                [iconDisplay]="'input'"
+                dateFormat="dd MM yy"
+                class="calendar-lg"
+                [showIcon]="true"
+                [appendTo]="'body'"
+                (onSelect)="updateEventDates()"
+                inputId="icondisplay"
+              />
+            </div>
+
+            <div class="grid">
+              <div class="col-6">
+                <p-dropdown
+                  [options]="timeSlots"
+                  [(ngModel)]="selectedStartTime"
+                  placeholder="Ora inizio"
+                  styleClass="w-full"
+                  [appendTo]="'body'"
+                  (onChange)="updateEventDates()"
+                ></p-dropdown>
+              </div>
+              <div class="col-6">
+                <p-dropdown
+                  [options]="timeSlots"
+                  [(ngModel)]="selectedEndTime"
+                  placeholder="Ora fine"
+                  styleClass="w-full"
+                  [appendTo]="'body'"
+                  (onChange)="updateEventDates()"
+                ></p-dropdown>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="field mb-3">
+            <label class="font-semibold block mb-2">Note</label>
+            <textarea
+              pInputTextarea
+              [(ngModel)]="editedEvent.description"
+              rows="12"
+              class="w-full"
+              placeholder="Aggiungi note..."
+            ></textarea>
+          </div>
+        </div>
+        <div *ngIf="isMaximized" class="h-full calendar-container">
+          <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

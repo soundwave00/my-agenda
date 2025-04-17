@@ -1,0 +1,121 @@
+<div class="filter-bar shadow-2">
+  <div class="flex gap-2 align-items-center justify-content-between">
+    <app-custom-button
+      styleClass="border-round-2xl p-2 p-button-secondary"
+      label="Oggi"
+      (onClick)="onGoToday()"
+      icon="pi pi-calendar"
+    >
+    </app-custom-button>
+    <div class="flex align-items-center gap-2">
+      <app-custom-button
+        styleClass="custom-nav-button p-2 p-button-secondary no-icon"
+        icon="pi pi-chevron-left"
+        (onClick)="onGoPrev()"
+      >
+      </app-custom-button>
+      <p-calendar
+        [(ngModel)]="event_date"
+        [iconDisplay]="'input'"
+        dateFormat="dd MM yy"
+        class="calendar-lg"
+        [showIcon]="true"
+        (ngModelChange)="onSetEventDate()"
+        inputId="icondisplay"
+      />
+      <app-custom-button
+        styleClass="custom-nav-button p-2 p-button-secondary"
+        icon="pi pi-chevron-right"
+        (onClick)="onGoNext()"
+      >
+      </app-custom-button>
+    </div>
+    <div class="flex align-items-center gap-2">
+      <span *ngIf="isSelectLabelVisible" class="text-sm font-semibold"
+        >Periodo</span
+      >
+      <div>
+        <app-custom-select-button
+          [options]="frequencyOptions"
+          [ngModel]="frequencyValue"
+          (ngModelChange)="handleSelectFrequency($event)"
+        >
+        </app-custom-select-button>
+      </div>
+    </div>
+    <div class="flex align-items-center gap-2">
+      <span *ngIf="isSelectLabelVisible" class="text-sm font-semibold"
+        >Operatori/Poltrone</span
+      >
+      <div>
+        <app-custom-select-button
+          [options]="structureOptions"
+          [ngModel]="structureValue"
+          (ngModelChange)="handleSelectChange($event)"
+        >
+        </app-custom-select-button>
+      </div>
+    </div>
+    <div class="flex align-items-center search-bar-container">
+      <app-search-bar></app-search-bar>
+    </div>
+    <app-custom-button
+      styleClass="p-button-primary"
+      [label]="isSelectLabelVisible ? 'Crea appuntamento' : ''"
+      (click)="onCreateAppointment()"
+      icon="pi pi-plus"
+    ></app-custom-button>
+  </div>
+  <div class="flex gap-3 align-items-center">
+    <span>Filtri</span>
+    <app-custom-dropdown
+      icon="pi pi-bars"
+      [options]="clinics"
+      [(ngModel)]="selectedClinics"
+      (valueChanged)="updateClinics($event)"
+      optionLabel="name"
+      styleClass="dropdown-lg"
+      placeholder="Seleziona Clinica"
+    ></app-custom-dropdown>
+
+    <app-custom-dropdown
+      [isImage]="false"
+      [options]="operators"
+      [(ngModel)]="selectedOperators"
+      (valueChanged)="updateOperators($event)"
+      icon="pi pi-user mr-2 text-500"
+      optionLabel="name"
+      styleClass="dropdown-lg"
+      placeholder="Seleziona Operatori"
+    ></app-custom-dropdown>
+
+    <app-custom-dropdown
+      [options]="chairs"
+      [(ngModel)]="selectedChairs"
+      (valueChanged)="updateChairs($event)"
+      [isImage]="true"
+      icon="../../../../assets/layout/images/office-chair.svg"
+      optionLabel="name"
+      styleClass="dropdown-lg"
+      placeholder="Seleziona Poltrone"
+    ></app-custom-dropdown>
+
+    <app-custom-dropdown
+      [options]="statesOptions"
+      [(ngModel)]="selectedStates"
+      (valueChanged)="updateStates($event)"
+      [isImage]="true"
+      icon="../../../../assets/layout/images/calendar-star.svg"
+      optionLabel="label"
+      styleClass="dropdown-lg"
+      placeholder="Stato: tutti"
+    ></app-custom-dropdown>
+
+    <app-custom-switch
+      [label]="isSwitchLabelVisible ? 'Operatori disponibili' : ''"
+      [(ngModel)]="availableOperatorsSwitch"
+      (onChange)="handleSwitchChange($event)"
+    >
+    </app-custom-switch>
+  </div>
+</div>

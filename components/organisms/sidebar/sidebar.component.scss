@@ -1,0 +1,116 @@
+.sidebar-container-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 15;
+  // background-color: rgba(0, 0, 0, 0.1254901961);
+}
+
+:host ::ng-deep {
+  .p-sidebar {
+    background: white;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 6px;
+  }
+}
+
+h4 {
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+h1 {
+  margin: 0;
+}
+
+.sidebar-custom-show,
+.sidebar-custom-hide {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 95%;
+  z-index: 99999;
+  background-color: white;
+  border: 2px solid #bababa70;
+  padding: 0.5rem;
+  border-radius: 1%;
+  overflow-y: hidden;
+}
+
+/* Applica la transizione solo quando si passa a .sidebar-custom-show */
+.sidebar-custom-show {
+  width: 40%;
+  margin: -0.5rem 1rem 0.5rem 0rem;
+  transition: width 0.1s ease-in-out; /* Transizione solo per apertura */
+}
+
+.sidebar-custom-hide {
+  width: 0;
+  margin: 0rem;
+  padding: 0;
+  transition: none; /* Nessuna transizione quando si chiude */
+}
+
+.sidebar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.2rem 0.5rem;
+  align-items: center;
+  background-color: rgb(220 220 220 / 44%);
+  border-radius: 30px;
+  border: 1px solid #bababa60;
+}
+
+.service-container {
+  border: 1px solid #d3d3d3;
+  padding: 0.3rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  span,
+  i {
+    font-size: 0.9rem;
+  }
+  i {
+    opacity: 50%;
+  }
+}
+
+select {
+  border: 1.5px solid #00000020;
+  border-radius: 4px;
+  padding: 0.4rem;
+  color: #00000090;
+  background-color: transparent;
+  width: 180px;
+}
+
+.notes-container {
+  border: 1px solid rgb(226, 226, 226, 0.5);
+  border-radius: 8px;
+
+  .header {
+    background: rgb(226, 226, 226, 0.3);
+    padding: 0.5rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .body {
+    padding: 1rem;
+
+    textarea {
+      border: 1px solid rgb(226, 226, 226);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+  }
+}

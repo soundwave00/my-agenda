@@ -1,0 +1,140 @@
+:host ::ng-deep {
+  .p-dialog {
+    height: auto;
+    max-height: 100%;
+  }
+
+  .mobile-new-event-dialog {
+    .p-dialog-content {
+      padding: 0;
+      border-radius: 0;
+    }
+  }
+
+  .p-inputtext,
+  .p-dropdown {
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  .p-dropdown-label {
+    padding: 0.75rem;
+  }
+
+  .p-calendar .p-inputtext {
+    border-radius: 8px;
+    padding: 0.75rem;
+  }
+
+  .time-dropdown {
+    min-width: 100px;
+
+    .p-dropdown-label {
+      text-align: center;
+    }
+  }
+
+  .status-dropdown .p-dropdown-label {
+    color: #f59e0b;
+    font-weight: 500;
+  }
+}
+
+.event-dialog-content {
+  padding: 1rem 0;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e9ecef;
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .back-button {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+
+    i {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.notes-container {
+  border: 1px solid rgb(226, 226, 226, 0.5);
+  border-radius: 8px;
+
+  .header {
+    background: rgb(226, 226, 226, 0.3);
+    padding: 0.5rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .body {
+    padding: 1rem;
+
+    textarea {
+      border: 1px solid rgb(226, 226, 226);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+  }
+}
+
+.field {
+  margin-bottom: 1rem;
+
+  i {
+    color: #6c757d;
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center;
+  }
+}
+
+.input-container {
+  flex-grow: 1;
+}
+
+.time-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.time-separator {
+  font-weight: bold;
+  color: #6c757d;
+}
+
+.clear-button,
+.dropdown-button,
+.calendar-button {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+
+  i {
+    font-size: 1rem;
+    color: #6c757d;
+  }
+}
+
+.chair-img {
+  width: 19px;
+}

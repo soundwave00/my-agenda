@@ -1,0 +1,251 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '100vw', maxWidth: '500px', margin: '0 auto' }"
+  [showHeader]="false"
+  [appendTo]="'body'"
+  [position]="'bottom'"
+  styleClass="mobile-new-event-dialog"
+>
+  <div class="event-dialog-content">
+    <!-- Header -->
+    <div *ngIf="!moreDetails" class="dialog-header">
+      <h2>Nuovo appuntamento</h2>
+      <app-custom-button
+          label="Più Dettagli"
+          styleClass="details-link"
+          (onClick)="OnDetailsClick()"
+        >
+        </app-custom-button>
+    </div>
+
+    <div *ngIf="moreDetails" class="dialog-header">
+      <div class="flex align-items-center">
+        <button class="back-button" (click)="backToBaseDialog()">
+          <i class="pi pi-arrow-left"></i>
+        </button>
+        <h2 class="ml-2">Dettagli appuntamento</h2>
+      </div>
+    </div>
+
+    <!-- Patient Info -->
+    <div class="field mb-3">
+      <div class="flex align-items-center">
+        <i class="pi pi-user-plus mr-2"></i>
+        <div class="input-container w-full">
+          <app-custom-input
+            [(ngModel)]="patientName"
+            placeholder="Inserisci paziente"
+            styleClass="w-full"
+          ></app-custom-input>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="field mb-3">
+      <div class="flex align-items-center">
+        <div class="flex flex-column">
+          <i class="pi pi-phone mr-2"></i>
+          <i class="pi pi-envelope mr-2"></i>
+        </div>
+        <div class="input-container w-full">
+          <app-custom-input
+            [placeholder]="'Inserisci contatto principale'"
+            [(ngModel)]="contactInfo"
+            styleClass="w-full"
+          ></app-custom-input>
+        </div>
+      </div>
+    </div>
+
+    <p-divider />
+
+    <!-- Service -->
+    <div class="field mb-3">
+      <div class="flex align-items-center">
+        <span class="mr-2">
+          <img
+            class="chair-img"
+            src="../../../../assets/layout/images/office-chair.svg"
+            alt="Chair Icon"
+          />
+        </span>
+        <div class="input-container w-full">
+          <p-dropdown
+            [options]="chairs"
+            [(ngModel)]="selectedChair"
+            optionLabel="name"
+            placeholder="Seleziona poltrona"
+            styleClass="w-full"
+            [appendTo]="'body'"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctor -->
+    <div class="field mb-3">
+      <div class="flex align-items-center">
+        <i class="pi pi-user mr-2"></i>
+        <div class="input-container w-full">
+          <p-dropdown
+            [options]="doctors"
+            [(ngModel)]="selectedDoctor"
+            optionLabel="name"
+            placeholder="Seleziona dottore"
+            styleClass="w-full"
+            [appendTo]="'body'"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date -->
+    <div class="field mb-3">
+      <div class="flex align-items-center">
+        <i class="pi pi-clock mr-2"></i>
+        <div class="input-container w-full w-calendar">
+          <p-calendar
+            [(ngModel)]="selectedDate"
+            [iconDisplay]="'input'"
+            dateFormat="dd/MM/yy"
+            [showIcon]="true"
+            styleClass="w-full"
+            [appendTo]="'body'"
+            (onSelect)="updateEventDates()"
+            inputStyleClass="w-full"
+          ></p-calendar>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time -->
+    <div class="field mb-3">
+      <div class="flex align-items-center">
+        <i style="visibility: hidden" class="pi pi-clock mr-2"></i>
+        <div class="time-container w-full">
+          <div class="flex align-items-center justify-content-between">
+            <p-dropdown
+              [options]="timeSlots"
+              [(ngModel)]="selectedStartTime"
+              optionLabel="label"
+              placeholder="08:00"
+              styleClass="time-dropdown"
+              [appendTo]="'body'"
+              (onChange)="updateEventDates()"
+            ></p-dropdown>
+            <span class="mx-2 time-separator">-</span>
+            <p-dropdown
+              [options]="timeSlots"
+              [(ngModel)]="selectedEndTime"
+              optionLabel="label"
+              placeholder="09:00"
+              styleClass="time-dropdown"
+              [appendTo]="'body'"
+              (onChange)="updateEventDates()"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p-divider />
+
+    <!-- Status -->
+    <div class="field mb-3">
+      <div class="flex align-items-center">
+        <span class="mr-2">
+          <img
+            class="chair-img"
+            src="../../../../assets/layout/images/calendar-star.svg"
+            alt="User Avatar"
+        /></span>
+        <div class="input-container w-full">
+          <app-custom-dropdown
+            [options]="statuses"
+            [(ngModel)]="selectedStatus"
+            (valueChanged)="updateStatus($event)"
+            [isImage]="true"
+            [icon]="selectedStatus.icon"
+            optionLabel="label"
+            styleClass="dropdown-lg w-full status-dropdown"
+            placeholder="Seleziona stato"
+          >
+          </app-custom-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="moreDetails">
+      <p-divider />
+
+      <!-- Treatment Details -->
+      <div class="field mb-4">
+        <div class="flex align-items-center">
+          <i class="pi pi-briefcase mr-2"></i>
+          <div class="input-container w-full">
+            <app-custom-input
+              [placeholder]="'Inserisci prestazione'"
+              [(ngModel)]="treatmentDetails"
+              styleClass="w-full"
+            ></app-custom-input>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="notes-container">
+        <div class="header">
+          <img
+            src="../../../assets/layout/images/clipboard.svg"
+            class="imported-icon"
+          />
+          <span class="font-semibold">NOTE</span>
+        </div>
+        <hr class="border-100 surface-overlay border opacity-30 m-0" />
+        <div class="body">
+          <div class="flex flex-row gap-3 justify-content-start w-full">
+            <ng-container
+              *ngFor="let alertItem of newEvent?.extendedProps?.['alert']"
+            >
+              <div class="flex align-items-center gap-2">
+                <img [src]="getAlertIcon(alertItem)" class="imported-icon" />
+                <small> {{ getAlertText(alertItem) }} </small>
+              </div>
+            </ng-container>
+          </div>
+
+          <textarea
+            class="w-full mt-2"
+            id="notes"
+            rows="6"
+            formControlName="notes"
+          >
+          </textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-content-end mt-4 gap-3">
+      <button
+        pButton
+        label="Annulla"
+        class="p-button-rounded p-button-secondary p-button-small"
+        icon="pi pi-times"
+        (click)="closeDialog()"
+      ></button>
+      <button
+        pButton
+        label="Salva"
+        class="p-button-rounded p-button-primary p-button-small"
+        icon="pi pi-check"
+        (click)="saveEvent()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

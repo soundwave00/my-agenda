@@ -1,0 +1,22 @@
+<div class="select-button-wrapper">
+  <p-selectButton
+    [options]="options"
+    [(ngModel)]="selectedValue"
+    [optionLabel]="optionLabel"
+    (onChange)="handleChange($event)"
+    allowEmpty="false"
+  >
+    <ng-template let-item pTemplate>
+      <img
+        *ngIf="item.imgSrc != null && item.imgSrc != ''"
+        [src]="item.imgSrc"
+        alt="icon"
+      />
+      <i
+        *ngIf="item.icon != null"
+        class="{{ item.icon }}"
+        style="color: var(--secondary-color-text); font-size: 0.8rem"
+      ></i>
+    </ng-template>
+  </p-selectButton>
+</div>

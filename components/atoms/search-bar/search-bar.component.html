@@ -1,0 +1,101 @@
+<div class="search-container">
+  <!-- Full search bar (visible above 851px) -->
+  <span class="p-input-icon-left p-input-icon-right w-full full-search">
+    <i class="pi pi-search icon"></i>
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="searchTerm"
+      (input)="onInputChange()"
+      placeholder="Cerca appuntamenti..."
+      class="w-full"
+    />
+    <i
+      *ngIf="searchTerm"
+      class="pi pi-times cursor-pointer"
+      (click)="clearSearch()"
+    ></i>
+  </span>
+
+  <!-- Icon-only search (visible below 851px) -->
+  <div class="icon-search">
+    <button
+      class="p-button p-button-rounded p-button-text p-button-primary"
+      (click)="toggleIconSearch()"
+    >
+      <i class="pi pi-search"></i>
+    </button>
+
+    <!-- Expanded search input when icon is clicked -->
+    <div *ngIf="isIconSearchExpanded" class="icon-search-expanded">
+      <span class="p-input-icon-left p-input-icon-right w-full">
+        <i class="pi pi-search icon"></i>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="searchTerm"
+          (input)="onInputChange()"
+          placeholder="Cerca appuntamenti..."
+          class="w-full"
+          #iconSearchInput
+        />
+        <i
+          *ngIf="searchTerm"
+          class="pi pi-times cursor-pointer"
+          (click)="clearSearch()"
+        ></i>
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="showResults" class="search-results-container">
+    <div *ngIf="loading" class="p-3 text-center">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    </div>
+
+    <ng-container *ngIf="!loading">
+      <div class="search-results-header">
+        <span>Suggerimenti</span>
+      </div>
+
+      <div class="search-results-list">
+        <div *ngIf="searchResults.length === 0" class="p-3 text-center">
+          Nessun risultato trovato
+        </div>
+
+        <div
+          *ngFor="let result of searchResults"
+          class="search-result-item"
+          (click)="onResultClick(result)"
+        >
+          <div
+            class="result-color-bar"
+            [style.background-color]="result.backgroundColor"
+          ></div>
+          <div class="result-content">
+            <div class="result-header">
+              <div class="result-patient">
+                <i class="pi pi-user"></i>
+                <span>{{ result.patientName }}</span>
+              </div>
+              <div class="result-time">
+                <span>{{ result.time }}</span>
+                <i class="pi pi-clock"></i>
+              </div>
+            </div>
+
+            <div class="result-service">
+              <i class="pi pi-briefcase"></i>
+              <span>{{ result.serviceCategory }}</span>
+            </div>
+
+            <div class="result-details">
+              <div class="service-name">{{ result.serviceName }}</div>
+              <div class="service-description">{{ result.description }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
