@@ -1,0 +1,51 @@
+<div class="header"
+  [ngClass]="{ mobile: isMobileView }">
+  <div>
+    <img
+      class="logo-img"
+      (click)="navigateHome()"
+      src="../assets/layout/images/logo.png"
+      alt=""
+    />
+  </div>
+  <div>
+    <p-dropdown
+      class="p-dropdown-flag"
+      [options]="items"
+      (onChange)="onSelectedLangChange($event)"
+      [(ngModel)]="selectedCountry"
+      [style]="{
+        'padding-left': '5px'
+      }"
+      optionLabel="name"
+      placeholder=""
+    >
+      <ng-template pTemplate="selectedItem">
+        <div class="flex align-items-center gap-2" *ngIf="selectedCountry">
+          <img
+            src="{{
+              'assets/demo/images/flag/' + selectedCountry.code + '.svg'
+            }}"
+            [class]="'flag flag-' + selectedCountry.code.toLowerCase()"
+            style="width: 18px"
+          />
+        </div>
+      </ng-template>
+      <ng-template let-country pTemplate="item">
+        <div class="flex align-items-center justify-content-center gap-1">
+          <img
+            src="{{
+              'assets/demo/images/flag/' + country.code.toLowerCase() + '.svg'
+            }}"
+            [class]="'flag flag-' + country.code.toLowerCase()"
+            style="width: 18px"
+          />
+        </div>
+      </ng-template>
+    </p-dropdown>
+  </div>
+</div>
+<div class="main-container">
+  <router-outlet></router-outlet>
+  <p-toast></p-toast>
+</div>
