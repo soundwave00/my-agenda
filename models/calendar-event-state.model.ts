@@ -1,0 +1,15 @@
+export enum CalendarEventState {
+  Confermato = 1,
+  Assente = 2,
+  Arrivato = 3,
+  InCura = 4,
+  Annullato = 5,
+  InAttesa = 6,
+  Terminato = 7,
+  Urgente = 8,
+  Rinviato = 9,
+  InAttesaDiConferma = 10,
+  NonPresentatoNonArrivato = 11,
+  Pronto = 12,
+  InRitardo = 13,
+}
